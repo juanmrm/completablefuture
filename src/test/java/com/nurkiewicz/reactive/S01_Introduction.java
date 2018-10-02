@@ -27,7 +27,7 @@ public class S01_Introduction extends AbstractFuturesTest {
 		final Callable<String> task = () -> client.mostRecentQuestionAbout("java");
 		final Future<String> javaQuestionFuture = executorService.submit(task);
 		//...
-		final String javaQuestion = javaQuestionFuture.get();
+		final String javaQuestion = javaQuestionFuture.get(); // Bloking main thread here to wait for future completition. Bad Practice
 		log.debug("Found: '{}'", javaQuestion);
 	}
 
@@ -39,7 +39,7 @@ public class S01_Introduction extends AbstractFuturesTest {
 		final Future<String> java = findQuestionsAbout("java");
 		final Future<String> scala = findQuestionsAbout("scala");
 
-		//???
+		//How to wait for the first one that finsihed???
 	}
 
 	private Future<String> findQuestionsAbout(String tag) {

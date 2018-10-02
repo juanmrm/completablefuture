@@ -4,7 +4,6 @@
 	<logger name="net" level="INFO"/>
 	<logger name="com" level="INFO"/>
 	<logger name="com.nurkiewicz" level="ALL"/>
-	<logger name="twitter4j" level="INFO"/>
 
 	<root level="ALL">
 		<appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">

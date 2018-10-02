@@ -60,7 +60,7 @@
 		<dependency>
 			<groupId>io.reactivex</groupId>
 			<artifactId>rxjava</artifactId>
-			<version>1.0.11</version>
+			<version>RELEASE</version>
 		</dependency>
 
 		<!-- Testing -->
