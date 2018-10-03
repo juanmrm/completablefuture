@@ -1,21 +1,25 @@
 package com.nurkiewicz.reactive;
 
+import com.google.common.util.concurrent.ThreadFactoryBuilder;
 import com.nurkiewicz.reactive.util.AbstractFuturesTest;
 import com.nurkiewicz.reactive.util.InterruptibleTask;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Ignore;
 import org.junit.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.concurrent.*;
 
 public class S11_Cancelling extends AbstractFuturesTest {
 
+	private static final Logger log = LoggerFactory.getLogger(S11_Cancelling.class);
 	private static ExecutorService myThreadPool;
 
 	@BeforeClass
 	public static void init() {
-		myThreadPool = Executors.newFixedThreadPool(10);
+		myThreadPool = Executors.newFixedThreadPool(10, new ThreadFactoryBuilder().setNameFormat("Custom-%d").build());
 	}
 
 	@AfterClass
@@ -31,9 +35,11 @@ public class S11_Cancelling extends AbstractFuturesTest {
 		task.blockUntilStarted();
 
 		//when
+		log.debug("Interrupt signal has been send");
 		future.cancel(true);
 
 		//then
+		log.debug("Block the thread until interrupted");
 		task.blockUntilInterrupted();
 	}
 
@@ -46,9 +52,11 @@ public class S11_Cancelling extends AbstractFuturesTest {
 		task.blockUntilStarted();
 
 		//when
+		log.debug("Interrupt signal has been send");
 		future.cancel(true);
 
 		//then
+		log.debug("Block the thread until interrupted");
 		task.blockUntilInterrupted();
 	}
 }

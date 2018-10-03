@@ -11,8 +11,8 @@ public class Futures {
 		final CompletableFuture<T> future = new CompletableFuture<>();
 		observable
 				.doOnError(future::completeExceptionally)
-				.single(future::complete);
-				// .forEach(future::complete);
+				.single()
+				.forEach(future::complete);
 		return future;
 	}
 

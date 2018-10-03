@@ -30,7 +30,7 @@ public class S05_Zip extends AbstractFuturesTest {
 		final CompletableFuture<String> scala = questions("scala");
 
 		final CompletableFuture<String> both = java.
-				applyToEither(scala, title -> title.toUpperCase());
+				applyToEither(scala, String::toUpperCase);
 
 		both.thenAccept(title -> log.debug("First: {}", title));
 	}

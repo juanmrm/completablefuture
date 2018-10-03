@@ -35,10 +35,20 @@ public class S10_AsyncHttp extends AbstractFuturesTest {
 		TimeUnit.SECONDS.sleep(5);
 	}
 
-	public void loadTag(
-			String tag,
-			Consumer<String> onSuccess,
-			Consumer<Throwable> onError) throws IOException {
+	@Test
+	public void asyncHttpWithFuture() throws Exception {
+		CompletableFuture<String> java = loadTag("java")
+				.whenComplete((result, throwable) -> {
+					if (throwable != null) {
+						log.error("Mayday!", throwable);
+					} else {
+						log.debug("Got: {}", result);
+					}
+				});
+		java.get(3, TimeUnit.SECONDS);
+	}
+
+	public void loadTag(String tag, Consumer<String> onSuccess, Consumer<Throwable> onError) throws IOException {
 		asyncHttpClient
 				.prepareGet("http://stackoverflow.com/questions/tagged/" + tag)
 				.execute(

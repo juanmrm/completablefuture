@@ -13,10 +13,10 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public class S12_RxJava extends AbstractFuturesTest {
 
-	public static final String MSG = "Don't panic";
+	private static final String MSG = "Don't panic";
 
 	@Test
-	public void shouldConvertCompletedFutureToCompletedObservable() throws Exception {
+	public void shouldConvertCompletedFutureToCompletedObservable() {
 		//given
 		CompletableFuture<String> future = CompletableFuture.completedFuture("Abc");
 
@@ -28,7 +28,7 @@ public class S12_RxJava extends AbstractFuturesTest {
 	}
 
 	@Test
-	public void shouldConvertFailedFutureIntoObservableWithFailure() throws Exception {
+	public void shouldConvertFailedFutureIntoObservableWithFailure() {
 		//given
 		CompletableFuture<String> future = failedFuture(new IllegalStateException(MSG));
 
@@ -68,7 +68,7 @@ public class S12_RxJava extends AbstractFuturesTest {
 		assertThat(future.get(1, SECONDS)).isEqualTo(1);
 	}
 
-	<T> CompletableFuture<T> failedFuture(Exception error) {
+	private <T> CompletableFuture<T> failedFuture(Exception error) {
 		CompletableFuture<T> future = new CompletableFuture<>();
 		future.completeExceptionally(error);
 		return future;

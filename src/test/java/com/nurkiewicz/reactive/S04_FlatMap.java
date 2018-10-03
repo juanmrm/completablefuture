@@ -14,16 +14,18 @@ public class S04_FlatMap extends AbstractFuturesTest {
 
 	private static final Logger log = LoggerFactory.getLogger(S04_FlatMap.class);
 
+	// thenApply should be used if you have a synchronous mapping function.
 	@Test
 	public void thenApplyIsWrong() throws Exception {
 		final CompletableFuture<CompletableFuture<Question>> future =
 				javaQuestions()
-						.thenApply(doc ->
-								findMostInterestingQuestion(doc));
+						.thenApply(this::findMostInterestingQuestion);
+		Question question = future.get().get();// This does not make much sense
+		System.out.println(question);
 	}
 
 	@Test
-	public void thenAcceptIsPoor() throws Exception {
+	public void thenAcceptIsPoor() {
 		javaQuestions().thenAccept(document -> {
 			findMostInterestingQuestion(document).thenAccept(question -> {
 				googleAnswer(question).thenAccept(answer -> {
@@ -39,18 +41,19 @@ public class S04_FlatMap extends AbstractFuturesTest {
 		});
 	}
 
+	/*
+		thenCompose is used if you have an asynchronous mapping function (i.e. one that returns a CompletableFuture).
+		It will then return a future with the result directly, rather than a nested future.
+	 */
 	@Test
-	public void thenCompose() throws Exception {
+	public void thenCompose() {
 		final CompletableFuture<Document> java = javaQuestions();
 
-		final CompletableFuture<Question> questionFuture =
-				java.thenCompose(doc -> findMostInterestingQuestion(doc));
+		final CompletableFuture<Question> questionFuture = java.thenCompose(this::findMostInterestingQuestion);
 
-		final CompletableFuture<String> answerFuture =
-				questionFuture.thenCompose(question -> googleAnswer(question));
+		final CompletableFuture<String> answerFuture = questionFuture.thenCompose(this::googleAnswer);
 
-		final CompletableFuture<Integer> httpStatusFuture =
-				answerFuture.thenCompose(answer -> postAnswer(answer));
+		final CompletableFuture<Integer> httpStatusFuture = answerFuture.thenCompose(this::postAnswer);
 
 		httpStatusFuture.thenAccept(status -> {
 			if (status == HttpStatus.OK.value()) {
@@ -61,12 +64,13 @@ public class S04_FlatMap extends AbstractFuturesTest {
 		});
 	}
 
+	// the same as the previous method without intermediate variables
 	@Test
-	public void chained() throws Exception {
+	public void chained() {
 		javaQuestions().
-				thenCompose(doc -> findMostInterestingQuestion(doc)).
-				thenCompose(question -> googleAnswer(question)).
-				thenCompose(answer -> postAnswer(answer)).
+				thenCompose(this::findMostInterestingQuestion).
+				thenCompose(this::googleAnswer).
+				thenCompose(this::postAnswer).
 				thenAccept(status -> {
 					if (status == HttpStatus.OK.value()) {
 						log.debug("OK");

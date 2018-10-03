@@ -34,6 +34,7 @@ public class S09_Promises extends AbstractFuturesTest {
 		pool.schedule(
 				() -> promise.completeExceptionally(new TimeoutException()),
 				duration.toMillis(), TimeUnit.MILLISECONDS);
+
 		return promise;
 	}
 

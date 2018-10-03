@@ -22,8 +22,7 @@ public class S03_Map extends AbstractFuturesTest {
 				);
 
 		final Document document = java.get();       //blocks
-		final Element element = document.
-				select("a.question-hyperlink").get(0);
+		final Element element = document.select("a.question-hyperlink").get(0);
 		final String title = element.text();
 		final int length = title.length();
 		log.debug("Length: {}", length);
@@ -65,6 +64,7 @@ public class S03_Map extends AbstractFuturesTest {
 		log.debug("Length: {}", length.get());
 	}
 
+	// thenApply is used if you have a synchronous mapping function.
 	@Test
 	public void thenApplyChained() throws Exception {
 		final CompletableFuture<Document> java =

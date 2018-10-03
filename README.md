@@ -1,5 +1,21 @@
 # CompletableFuture in Java 8 - asynchronous processing done right
 
+Covers:
+
+    * CompletableFuture.completedFuture
+    * CompletableFuture.supplyAsync
+    * CompletableFuture.allOf
+    * CompletableFuture.anyOf
+    * thenApply
+    * thenAccept
+    * thenCompose
+    * thenCombine
+    * applyToEither
+    * handle
+    * exceptionally
+    * completeExceptionally
+
+
 ## Tomasz Nurkiewicz
 
 Twitter: [@tnurkiewicz](https://twitter.com/tnurkiewicz)
